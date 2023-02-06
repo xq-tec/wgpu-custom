@@ -80,7 +80,7 @@ name = "stencil-triangles"
 test = true
 
 [features]
-default = ["wgsl"]
+default = []
 # Apply run-time checks, even in release builds. These are in addition
 # to the validation carried out at public APIs in all builds.
 strict_asserts = ["wgc?/strict_asserts", "wgt/strict_asserts"]
@@ -96,19 +96,17 @@ vulkan-portability = ["wgc/vulkan"]
 expose-ids = []
 
 # wgpu-core is always available as an optional dependency, "wgc".
-# Whenever wgpu-core is selected, we want the GLES backend and raw
-# window handle support.
+# Whenever wgpu-core is selected, we want raw window handle support.
 [dependencies.wgc]
 optional = true
 workspace = true
-features = ["raw-window-handle", "gles"]
+features = ["raw-window-handle"]
 
 # wgpu-core is required whenever not targeting web APIs directly.
-# Whenever wgpu-core is selected, we want the GLES backend and raw
-# window handle support.
+# Whenever wgpu-core is selected, we want raw window handle support.
 [target.'cfg(any(not(target_arch = "wasm32"), target_os = "emscripten"))'.dependencies.wgc]
 workspace = true
-features = ["raw-window-handle", "gles"]
+features = ["raw-window-handle"]
 
 # We want the wgpu-core Metal backend on macOS and iOS.
 # (We should consider also enabling "vulkan" for Vulkan Portability.)
@@ -119,7 +117,7 @@ features = ["metal"]
 # We want the wgpu-core Direct3D backends on Windows.
 [target.'cfg(windows)'.dependencies.wgc]
 workspace = true
-features = ["dx11", "dx12"]
+features = []
 
 # We want the wgpu-core Vulkan backend on Unix (but not Emscripten) and Windows.
 [target.'cfg(any(windows, all(unix, not(target_arch = "emscripten"), not(target_os = "ios"), not(target_os = "macos"))))'.dependencies.wgc]
